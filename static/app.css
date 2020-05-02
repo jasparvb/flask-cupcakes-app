@@ -20,3 +20,14 @@ img {
 .message {
     font-weight: 700;
 }
+
+#cupcake-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+li {
+    list-style: none;
+    margin: 10px;
+    width: 300px;
+}

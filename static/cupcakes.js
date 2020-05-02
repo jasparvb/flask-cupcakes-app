@@ -1,13 +1,14 @@
 const BASE_URL = "http://127.0.0.1:5000/api";
 
-class fetchAllCupcakes {
+class Cupcakes {
     constructor() {
         this.getCupcakes()
+        $('#add-cupcake-form').on('submit', this.addCupcake.bind(this))
+        $('#cupcake-list').on('click', '.delete-btn', this.deleteCupcake.bind(this))
     }
 
     async getCupcakes() {
         const response = await axios.get(`${BASE_URL}/cupcakes`);
-        console.log(response);
         for(let cupcake of response.data.cupcakes) {
             this.generateHTML(cupcake);
         }
@@ -20,16 +21,10 @@ class fetchAllCupcakes {
                 <p>Flavor: ${cupcake.flavor}<br>
                 Size: ${cupcake.size}<br>
                 Rating: ${cupcake.rating}</p>
-                <button data-id="${cupcake.id}">Delete</button>
+                <button data-id="${cupcake.id}" class="delete-btn">Delete</button>
             </li>
         `);
         $('#cupcake-list').append($item);
-    }
-}
-
-class createCupcakes {
-    constructor() {
-        $('#add-cupcake-form').on('submit', this.addCupcake.bind(this))
     }
 
     async addCupcake(e) {
@@ -38,13 +33,19 @@ class createCupcakes {
         let flavor = $('#flavor').val();
         let size = $('#size').val();
         let rating = $('#rating').val();
-        let image = $('#iamge').val();
+        let image = $('#image').val();
         const response = await axios.post(`${BASE_URL}/cupcakes`, {flavor, size, rating, image});
-        console.log(response);
+
+        this.generateHTML(response.data.cupcake);
+    }
+
+    async deleteCupcake(e) {
+        let cupcakeId = $(e.target).attr('data-id');
+        await axios.delete(`${BASE_URL}/cupcakes/${cupcakeId}`);
+        $(e.target).closest('li').remove();
     }
 }
 
 $(async function() {
-    new fetchAllCupcakes();
-    new createCupcakes();
+    new Cupcakes();
 });
