@@ -37,6 +37,7 @@ class Cupcakes {
         const response = await axios.post(`${BASE_URL}/cupcakes`, {flavor, size, rating, image});
 
         this.generateHTML(response.data.cupcake);
+        $("#add-cupcake-form").trigger("reset");
     }
 
     async deleteCupcake(e) {
