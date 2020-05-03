@@ -29,7 +29,6 @@ class Cupcakes {
 
     async addCupcake(e) {
         e.preventDefault();
-        console.log('submitted');
         let flavor = $('#flavor').val();
         let size = $('#size').val();
         let rating = $('#rating').val();
